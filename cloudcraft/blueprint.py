@@ -54,14 +54,6 @@ def get_blueprint_by_name(blueprint_name: str, api_key: str):
 
         return None
              
-
-
-
-    
-
-    
-
-
 def list_blueprints(api_key):
     
     """Gets all the blueprints in the CloudCraft account"""
@@ -232,7 +224,6 @@ def get_blueprint_layout(api_key, bp_id, save=True):
             f.close()
 
     return response
-
 
 def create_blueprint(api_key, json_body):
     

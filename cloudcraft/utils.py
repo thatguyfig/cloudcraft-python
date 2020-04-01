@@ -17,7 +17,6 @@ def check_auth_error(response: object) -> None:
         raise PermissionError('Your API token is incorrect. Please try again')
         return
 
-
 def build_auth_header(api_key: str) -> dict:
 
     """Builds the authentication header"""
@@ -69,7 +68,6 @@ def load_json_file(filename: str) -> dict:
     else:
         raise FileNotFoundError()
     
-
 def save_byte_file(filename: str, data) -> None:
     
     """Saves provided byte data to the provided filepath"""
@@ -92,7 +90,6 @@ def save_byte_file(filename: str, data) -> None:
 
     except Exception as e:
         print(e)
-
 
 def get_json(x: bytes):
     

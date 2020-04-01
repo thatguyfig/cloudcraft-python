@@ -46,9 +46,7 @@ def list_blueprint_nodes(blueprint: dict, types_to_list=None):
     else:
 
         # stop iterating and just return all the nodes
-        return nodes
-
-        
+        return nodes   
 
 def list_blueprint_node_types(blueprint: dict):
 
