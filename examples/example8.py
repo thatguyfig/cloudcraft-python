@@ -26,6 +26,9 @@ modified = cloudcraft.add_instance_size_text(
 # save the modified version to disk
 cloudcraft.save_json_file('output/modified/ap-southeast-1.json', modified)
 
+# update the title
+modified['data']['name'] = 'ap-southeast-1 - Instance Sizes'
+
 # create a blueprint
 cloudcraft.create_blueprint(
     api_key=api_key,
