@@ -68,7 +68,7 @@ def list_blueprint_node_types(blueprint: dict):
 
     return node_types
 
-def add_text(bp_schema: dict, text_id: str, text_value: str, text_color='#ffffff', text_type='isotext', text_x=0, text_y=0, text_size=15):
+def add_text(bp_schema: dict, text_value: str, direction='down', relative_id=None, text_color='#000000', text_type='isotext', text_x=0, text_y=0, text_size=15, standing=False, outline=True):
     
     """Adds a text element to the Blueprint JSON"""
     
@@ -77,25 +77,82 @@ def add_text(bp_schema: dict, text_id: str, text_value: str, text_color='#ffffff
         
         # we create it
         bp_schema['data']['text'] = []
+
+    # if there is a node to position this in relation to
+    if relative_id:
         
-    # build the text element
-    text_obj = {
-        'text': text_value,
-        'type': text_type,
-        'color': text_color,
-        'mapPos': [
-            text_x,
-            text_y
-        ],
-        'textSize': text_size
-    }
+        # build the text element
+        text_obj = {
+            'text': text_value,
+            'type': text_type,
+            'color': text_color,
+            'mapPos': {
+                "relTo": relative_id,
+                "offset": [
+                    text_x,
+                    text_y
+                ]
+            },
+            'textSize': text_size,
+            'direction': direction,
+            'standing': standing,
+            'outline': outline
+        }
     
+    else:
+        
+        # build the text element
+        text_obj = {
+            'text': text_value,
+            'type': text_type,
+            'color': text_color,
+            'mapPos': [
+                text_x,
+                text_y
+            ],
+            'textSize': text_size
+        }
+
     # add the text element
     bp_schema['data']['text'].append(text_obj)
     
     # return the modified json
     return bp_schema
 
+def add_instance_size_text(bp_schema: dict, text_color='#f59342', text_x_offset=1., text_y_offset=.25):
+
+    """Adds the EC2 instance size as text to the EC2 instance node"""
+
+    # first, access the schema and obtain the 
+    nodes = bp_schema['data']['nodes']
+
+    # define the list of modified instance types
+    nodes_with_instance_type = ['ec2', 'rds']
+
+    # iterate over all nodes
+    for node in nodes:
+        
+        # if the node is ec2 type
+        if node['type'] in nodes_with_instance_type:
+
+            # build the aws instance size
+            instance_type = "{0}.{1}".format(node['instanceType'], node['instanceSize'])
+
+            # capture the node id
+            node_id = node['id']
+
+            # create a text element for this node id
+            bp_schema = add_text(
+                bp_schema=bp_schema,
+                text_value=instance_type,
+                relative_id=node_id,
+                text_x=text_x_offset,
+                text_y=text_y_offset,
+                text_color=text_color
+            )
+
+    # return the modified bp schema
+    return bp_schema
 
 
     

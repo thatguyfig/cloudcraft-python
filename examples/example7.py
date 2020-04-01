@@ -1,6 +1,12 @@
 # EXAMPLE7.PY
 #
-# Working with the JSON to understand the elements present
+# Formation examples - very much experimental work in progress
+#
+# Here we load a bluepirnt from local disk, obtain all the ec2 nodes and create a square formation out of the nodes.
+# 
+# This is useful as sometimes you need to know how many elements will fit inside an even-sided shape. 
+# 
+# The Formation() class performs all the calculations on creation. This is useful for determining the amount of space elements may take up.
 
 import cloudcraft
 
