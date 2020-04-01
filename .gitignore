@@ -1,0 +1,7 @@
+# pycache
+cloudcraft/__pycache__
+
+config.json
+other/
+
+.vscode/
