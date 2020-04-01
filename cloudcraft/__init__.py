@@ -1,6 +1,4 @@
 
-from .automation import * # only used to demonstrate how the other functions can be used
-
 from .accounts import *
 from .aws import * 
 from .blueprint import *
