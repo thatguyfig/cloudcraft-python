@@ -117,29 +117,6 @@ def default(o: dict) -> str:
     if isinstance(o, (datetime.datetime)):
         return o.__str__()
 
-def extract_customers(data: dict) -> dict:
-    
-    """Extracts the customer data from the DynamoDB results"""
-    
-    # temp array for return
-    customers = {
-        'customers': []
-    }
-    
-    # iterate over all records
-    for item in data['Items']:
-        
-        # build the singular customer item
-        customer = {
-            "name": item['customerName']['S'],
-            "region": item['customerRegion']['S']
-        }
-        
-        # add it to the list
-        customers['customers'].append(customer)
-        
-    return customers
-
 def build_dir(path: str) -> None:
     
     """Created a directory of the provided path if it does not already exist"""
