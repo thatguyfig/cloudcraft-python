@@ -71,6 +71,8 @@ Configure this JSON file to store the following:
 1. Your cloudcraft API token
 2. Your cloudcraft AWS account ID.
 
+Make sure to rename the config file from `config copy.json` to `config.json`
+
 ### Build some code or use an example
 
 Write your code, or run one of the examples by dragging it to the root of the project and running it using the below command for example:
