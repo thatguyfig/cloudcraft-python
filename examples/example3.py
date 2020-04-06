@@ -40,7 +40,7 @@ response = cloudcraft.snapshot_aws_region(
     export_format=export_format,
     filter_string=filter_string,
     excluded_types=excluded_types,
-    save=False
+    save=True
 )
 
 # nodes to remove
@@ -57,7 +57,7 @@ filename = 'output/modified/{}.json'.format(aws_region)
 
 # save data to the file
 cloudcraft.save_json_file(filename=filename, data=response)
-
+"""
 # override the blueprint name with what we want to call it
 response['data']['name'] = blueprint_name
 
@@ -66,3 +66,4 @@ cloudcraft.create_blueprint(
     api_key=api_key,
     json_body=response
 )
+"""

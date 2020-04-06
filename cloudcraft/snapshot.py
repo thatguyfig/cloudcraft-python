@@ -10,25 +10,27 @@ def snapshot_aws_region(api_key: str, account_id: str, aws_region: str, export_f
     # build the absolute base url
     url = 'https://api.cloudcraft.co/aws/account/{0}/{1}/{2}'.format(account_id, aws_region, export_format)
 
-    # create optional parameters
-    parameters = '?' # beginning params
-    parameters = parameters + 'grid=' + str(grid) # show grid or not
-    parameters = parameters + '&autoConnectComponents=' + str(auto_connect) # connect components or not
-    parameters = parameters + '&filter=' + filter_string # the string to filter components matching with
-    parameters = parameters + '&scale=' + str(scale)  # the scale of the output diagram (0.5 - half, 2 - double)
-    parameters = parameters + '&projection=' + projection # projection type - 'isometric' / '2d'
-    parameters = parameters + '&exclude=' + ','.join(excluded_types) # the types of objects to filter out
-    parameters = parameters + '&label=' + str(label) # whether to label the items or not
-    parameters = parameters + '&transparent=' + str(transparent) # whether background is transparent
 
-    # add url and parameters
-    full_url = url + parameters
+    if export_format != 'json':
+        # create optional parameters
+        parameters = '?' # beginning params
+        parameters = parameters + 'grid=' + str(grid) # show grid or not
+        parameters = parameters + '&autoConnectComponents=' + str(auto_connect) # connect components or not
+        parameters = parameters + '&filter=' + filter_string # the string to filter components matching with
+        parameters = parameters + '&scale=' + str(scale)  # the scale of the output diagram (0.5 - half, 2 - double)
+        parameters = parameters + '&projection=' + projection # projection type - 'isometric' / '2d'
+        parameters = parameters + '&exclude=' + ','.join(excluded_types) # the types of objects to filter out
+        parameters = parameters + '&label=' + str(label) # whether to label the items or not
+        parameters = parameters + '&transparent=' + str(transparent) # whether background is transparent
+
+        # add url and parameters
+        url = url + parameters
 
     # create auth headers
     header = build_auth_header(api_key)
 
     # send request
-    response = requests.get(url=full_url, headers=header)
+    response = requests.get(url=url, headers=header)
     
     # if response is good
     if response.status_code == 200:
@@ -79,8 +81,7 @@ def snapshot_aws_region(api_key: str, account_id: str, aws_region: str, export_f
     else:
         
         # print the server response
-        print(str(response.content))
-        print()
+        print('\t[-] Server response:',str(response.content, encoding='utf8'))
 
         # raise an error
         raise ConnectionError('An issue with the CloudCraft API occurred')

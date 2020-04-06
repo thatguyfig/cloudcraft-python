@@ -80,7 +80,7 @@ def export_blueprint(api_key, bp_id, export_format, save=True, filename=None):
     """Gets the current blueprint for a given Blueprint ID"""
     
     # list of valid formats allowed
-    valid_export_formats = ['svg', 'png', 'pdf', 'mxGraph', 'json']
+    valid_export_formats = ['svg', 'png', 'pdf', 'mxGraph']
     
     # validate format
     if export_format not in valid_export_formats:
@@ -223,9 +223,9 @@ def get_blueprint_layout(api_key, bp_id, save=True):
             json.dump(response_json, f, indent=4)
             f.close()
 
-    return response
+    return response.content
 
-def create_blueprint(api_key, json_body):
+def create_blueprint(api_key, json_body, blueprint_name):
     
     """Creates a new blueprint from the provided JSON object"""
     
@@ -234,6 +234,9 @@ def create_blueprint(api_key, json_body):
 
     # build auth header
     header = build_auth_header(api_key)
+
+    # set the title
+    json_body['data']['name'] = blueprint_name
     
     # add the content type header
     header['Content-Type'] = 'application/json'

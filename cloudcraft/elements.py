@@ -5,6 +5,7 @@
 import requests
 import json
 
+
 def remove_nodes_by_type(blueprint: dict, types_to_remove: list):
 
     """Remove nodes from the provided blueprint and list of types."""
@@ -117,41 +118,73 @@ def add_text(bp_schema: dict, text_value: str, direction='down', relative_id=Non
     # return the modified json
     return bp_schema
 
-def add_instance_size_text(bp_schema: dict, text_color='#f59342', text_x_offset=1., text_y_offset=.25):
+def add_node_group(bp_schema: dict, node_ids: list, group_name: str, group_colour: str) -> dict:
 
-    """Adds the EC2 instance size as text to the EC2 instance node"""
+    """Adds the subnet groups to the diagram based on provided node IDs"""
 
-    # first, access the schema and obtain the 
-    nodes = bp_schema['data']['nodes']
+    # create the group config
+    group_config = {
+            "type": "sg",
+            "name": group_name,
+            "nodes": node_ids,
+            "color": {
+                        "2d": group_colour,
+                        "isometric": group_colour
+            }
+        }
+    
+    # add it to the existing group
+    bp_schema['data']['groups'].append(group_config)
 
-    # define the list of modified instance types
-    nodes_with_instance_type = ['ec2', 'rds']
-
-    # iterate over all nodes
-    for node in nodes:
-        
-        # if the node is ec2 type
-        if node['type'] in nodes_with_instance_type:
-
-            # build the aws instance size
-            instance_type = "{0}.{1}".format(node['instanceType'], node['instanceSize'])
-
-            # capture the node id
-            node_id = node['id']
-
-            # create a text element for this node id
-            bp_schema = add_text(
-                bp_schema=bp_schema,
-                text_value=instance_type,
-                relative_id=node_id,
-                text_x=text_x_offset,
-                text_y=text_y_offset,
-                text_color=text_color
-            )
-
-    # return the modified bp schema
+    # return it
     return bp_schema
 
 
-    
+def extract_node_arn(bp_schema: dict, node_arn_types=['ec2','rds']):
+
+    """Extracts the Instance ARN of nodes that have it"""
+
+    # empty list for results
+    node_infos = []
+
+    # extract the nodes from the schema
+    nodes = bp_schema['data']['nodes']
+
+
+    # iterate over the nodes
+    for node in nodes:
+
+        # if the node type is valid
+        if node['type'] in node_arn_types:
+
+            # get aws account
+            aws_account = node['arn'].split(':')[4]
+
+            # get aws region
+            aws_region = node['arn'].split(':')[3]
+
+            # default instance id
+            instance_id = ""
+
+            # if it's an ec2
+            if node['type'] == 'ec2':
+                instance_id = node['arn'].split('/')[1]
+
+            if node['type'] == 'rds':
+                instance_id = node['arn'].split(':')[6]
+
+            node_info = {
+                'id': node['id'],
+                'type': node['type'],
+                'arn': node['arn'],
+                'instance_id': instance_id,
+                'aws_account': aws_account,
+                'aws_region': aws_region
+            }
+
+            assert instance_id != ""
+
+            node_infos.append(node_info)
+
+    return node_infos    
 

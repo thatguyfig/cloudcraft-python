@@ -13,12 +13,21 @@ from .utils import *
 # accounts
 from .accounts import add_aws_account, get_aws_accounts
 
+from .automation import (
+    create_customer_architecture_diagrams,
+    extract_customers,
+    run_customer_extracts,
+    AlternateNames
+)
+
 # aws
 from .aws import (
     create_aws_client,
     list_regions,
     ExcludedAwsRegions,
-    get_dynamodb_data
+    get_dynamodb_data,
+    get_ec2_instance_private_ip,
+    get_ec2_instance_public_ip
 )
 
 # blueprint
@@ -40,7 +49,15 @@ from .elements import (
     list_blueprint_nodes,
     list_blueprint_node_types,
     add_text,
+    extract_node_arn,
+    add_node_group
+)
+
+# extensions
+from .extensions import (
     add_instance_size_text,
+    add_instance_ips,
+    add_subnet_groups
 )
 
 # limits
@@ -70,6 +87,5 @@ from .utils import (
     load_json_file,
     pretty_print,
     wait,
-    extract_customers,
     build_dir
 )
