@@ -28,7 +28,7 @@ The structure can be seen below:
 project
 |  README.MD
 |  requirements.txt
-|  config copy.json
+|  config.json
 |
 └───cloudcraft
 |   |  __init__.py
@@ -109,7 +109,7 @@ aws_region = "ap-southeast-1"
 export_format = "pdf"
 
 # define the filter string to use
-filter_string = "" # we are using blank string as we don't want to filter
+filter_string = "tag=value" # we are using blank string as we don't want to filter
 
 # define the excluded types 
 excluded_types = ['ebs', 'lambda'] # removing EBS volumes and lambda functions
